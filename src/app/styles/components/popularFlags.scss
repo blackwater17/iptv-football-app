@@ -1,0 +1,21 @@
+.popular-flags {
+    width: 80%;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 10px;
+    row-gap: 10px;
+
+    img {
+        height: 21px !important;
+        width: auto !important;
+        cursor: pointer;
+        transition: .12s ease-in-out;
+    }
+
+    img:hover {
+        opacity: .6;
+    }
+}

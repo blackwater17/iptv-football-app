@@ -1,0 +1,28 @@
+.popular-channels {
+    width: 100%;
+    padding: 0;
+    margin: 0px auto 30px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 5px;
+    font-family: sans-serif;
+    width: 80%;
+
+    .popular-channel {
+        color: #eee;
+        border: 1px solid #3b3b3b;
+        padding: 6px 10px 4px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: .12s ease-in-out;
+    }
+
+    .popular-channel:hover {
+        border: 1px solid #999;
+    }
+
+}

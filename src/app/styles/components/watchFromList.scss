@@ -1,0 +1,37 @@
+.watch-from-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    column-gap: 10px;
+    row-gap: 10px;
+    flex-wrap: wrap;
+    width: 90%;
+    font-size: 12px;
+    box-sizing: border-box;
+    margin: 30px auto 20px;
+
+    button {
+        outline: none;
+        background-color: transparent;
+        cursor: pointer;
+        border: none;
+        // color: darkred;
+        color: #777;
+        font-size: 12px;
+        text-align: left;
+        transition: .12s ease-in-out;
+    }
+
+    button:hover {
+        opacity: .7;
+    }
+
+    button.found {
+        color: greenyellow;
+    }
+
+    button:not(.found) {
+        cursor: default;
+        pointer-events: none;
+    }
+}
