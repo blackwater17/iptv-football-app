@@ -1,36 +1,63 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## IPTV Football App
+This app offers a seamless experience for discovering today's football events across numerous channels. With the ability to click on channels and play them directly through VLC Player, you can enjoy faster access to your favorite sport events.
 
-First, run the development server:
+## Requirements
 
+Ensure you have the following prerequisites installed:
+
+- ****MongoDB****
+
+- ****Node.js and npm****
+
+- ****VLC Player****
+  
+- ****Legal IPTV Playlist****: Ensure you have a legitimate .m3u playlist file containing the IPTV channels required for the app to function properly.
+
+
+## Installation
+
+After installing the requirements:
+
+- ****Clone this repository to your local machine.****
+
+- ****Navigate to the project directory in your terminal.****
+
+- ****Run the following command to install dependencies (only once):****
+```bash
+npm install
+```
+- ****Finally, run the following command to start the app (you should run this everytime you want to start the app):****
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+****After these steps, the app will be accessible for viewing at**** 
+[http://localhost:3002](http://localhost:3002)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**Football Events Overview:** 
 
-## Learn More
+Explore today's football events fetched from *sport-tv-guide.live* website.
 
-To learn more about Next.js, take a look at the following resources:
+**Stream Availability:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Easily discover where to watch each game by clicking on events.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+**Channel Search and Playback:**
 
-## Deploy on Vercel
+Easily find and play your favorite channels using the search features. Then simply start the stream with a single click!
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Customization Options:**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+You can customize the app by modifying popular channels, countries, and leagues lists directly in the code to suit your preferences and needs.
+
+## Disclaimer
+
+Please ensure you have legal access to the IPTV channels provided in your .m3u playlist file. This app does not endorse or promote unauthorized access to any content.
+
+## License
+
+This project is licensed under the MIT License.
