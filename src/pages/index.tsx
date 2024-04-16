@@ -331,25 +331,23 @@ export default function Home() {
     <div className="content-container">
 
       <div className="text-white">
-        {!scanInProgress && isValid !== null && (
-          !isValid && (
-            <div className="w-full max-w-md mx-auto p-6 text-center">
-              <input
-                type="file"
-                id="file-input"
-                onChange={handleFileChange}
-                className="hidden"
-                accept=".m3u"
-                aria-label="Upload playlist file"
-              />
-              <label
-                htmlFor="file-input"
-                className="block cursor-pointer bg-gray-100 hover:bg-gray-200 p-6 rounded-lg"
-              >
-                <span className="text-gray-500 text-lg font-semibold">To view your channels, click and load the .m3u playlist file (one-time only)</span>
-              </label>
-            </div>
-          )
+        {!scanInProgress && isValid !== null && !isValid && (
+          <div className="w-full max-w-md mx-auto p-6 text-center">
+            <input
+              type="file"
+              id="file-input"
+              onChange={handleFileChange}
+              className="hidden"
+              accept=".m3u"
+              aria-label="Upload playlist file"
+            />
+            <label
+              htmlFor="file-input"
+              className="block cursor-pointer bg-gray-100 hover:bg-gray-200 p-6 rounded-lg"
+            >
+              <span className="text-gray-500 text-lg font-semibold">To view your channels, click and load the .m3u playlist file (one-time only)</span>
+            </label>
+          </div>
         )}
       </div>
 
