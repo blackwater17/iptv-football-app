@@ -24,7 +24,7 @@ After installing the requirements:
 
 - ****Navigate to the project directory in your terminal.****
 
-- ****Customize the path to your VLC Player installation by editing following file:****
+- ****Customize the path to your VLC Player installation by editing the following file:****
 ```bash
 .env.local
 ```
