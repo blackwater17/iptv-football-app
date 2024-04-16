@@ -24,6 +24,14 @@ After installing the requirements:
 
 - ****Navigate to the project directory in your terminal.****
 
+- ****Customize the path to your VLC Player installation by editing following file:****
+```bash
+.env.local
+```
+By default, its set to:
+```bash
+  C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe
+```
 - ****Run the following command to install dependencies (only once):****
 ```bash
 npm install
