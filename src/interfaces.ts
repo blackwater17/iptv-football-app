@@ -8,3 +8,11 @@ export interface SportEvent {
     eventName: string;
     day: string;
 }
+
+export interface MediaEntry {
+    // extinf: string;
+    url: string;
+    tvgName: string;
+    tvgLogo: string;
+    groupTitle: string;
+  }

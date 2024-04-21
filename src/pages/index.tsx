@@ -2,8 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import axios from 'axios';
 import '../app/globals.css';
 import popularCountryCodes from '../../utils/popularCountryCodes';
-import { fetchHTML, getLeagueObjects, fetchFoundChannels } from '../../utils/functions';
-import { SportEvent } from '../interfaces';
+import { fetchHTML, getLeagueObjects, fetchFoundChannels, parseM3U } from '../../utils/functions';
+import { SportEvent, MediaEntry } from '../interfaces';
 
 import EventGroupContainer from '../app/components/EventGroupContainer';
 import EventNoGroupContainer from '../app/components/EventNoGroupContainer';
@@ -29,6 +29,7 @@ export default function Home() {
   const [addedChannels, setAddedChannels] = useState(0);
   const [totalChannelsCount, setTotalChannelsCount] = useState(0);
   const [scanInProgress, setScanInProgress] = useState(false);
+  const [isValid, setIsValid] = useState<boolean | null>(null); // db
 
   const setWhereToWatchChannels = async (eventUrl: string) => {
     fetchHTML(eventUrl).then((htmlText: any) => {
@@ -223,38 +224,6 @@ export default function Home() {
     }
   }
 
-  interface MediaEntry {
-    // extinf: string;
-    url: string;
-    tvgName: string;
-    tvgLogo: string;
-    groupTitle: string;
-  }
-
-  function parseM3U(content: string): MediaEntry[] {
-    const lines = content.split('\n');
-    const mediaEntries: MediaEntry[] = [];
-
-    for (let i = 1; i < lines.length; i += 2) {
-      const extinf = lines[i].substring('#EXTINF:'.length).trim();
-
-      // Extract properties from EXTINF line
-      const [, tvgNameMatch] = extinf.match(/tvg-name="([^"]*)"/) || [];
-      const [, tvgLogoMatch] = extinf.match(/tvg-logo="([^"]*)"/) || [];
-      const [, groupTitleMatch] = extinf.match(/group-title="([^"]*)"/) || [];
-
-      const tvgName = tvgNameMatch || '';
-      const tvgLogo = tvgLogoMatch || '';
-      const groupTitle = groupTitleMatch || '';
-
-      const url = lines[i + 1].trim();
-
-      mediaEntries.push({ url, tvgName, tvgLogo, groupTitle });
-    }
-
-    return mediaEntries;
-  }
-
   async function uploadMediaEntriesInBulks(mediaEntries: MediaEntry[], batchSize: number) {
     const totalEntries = mediaEntries.length;
     setTotalChannelsCount(totalEntries);
@@ -310,7 +279,6 @@ export default function Home() {
     reader.readAsText(file);
   }
 
-  const [isValid, setIsValid] = useState<boolean | null>(null);
   const checkDatabaseValidity = async () => {
     try {
       const response = await axios.post('/api/isDatabaseValid', {

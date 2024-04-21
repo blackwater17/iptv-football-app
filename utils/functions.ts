@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { MediaEntry } from '../src/interfaces';
 
 export const fetchHTML = async (url: string) => {
     try {
@@ -82,3 +83,27 @@ export const fetchFoundChannels = async (channelNames: string[]) => {
         console.error('Error querying API:', error);
     }
 };
+
+export function parseM3U(content: string): MediaEntry[] {
+    const lines = content.split('\n');
+    const mediaEntries: MediaEntry[] = [];
+
+    for (let i = 1; i < lines.length; i += 2) {
+        const extinf = lines[i].substring('#EXTINF:'.length).trim();
+
+        // Extract properties from EXTINF line
+        const [, tvgNameMatch] = extinf.match(/tvg-name="([^"]*)"/) || [];
+        const [, tvgLogoMatch] = extinf.match(/tvg-logo="([^"]*)"/) || [];
+        const [, groupTitleMatch] = extinf.match(/group-title="([^"]*)"/) || [];
+
+        const tvgName = tvgNameMatch || '';
+        const tvgLogo = tvgLogoMatch || '';
+        const groupTitle = groupTitleMatch || '';
+
+        const url = lines[i + 1].trim();
+
+        mediaEntries.push({ url, tvgName, tvgLogo, groupTitle });
+    }
+
+    return mediaEntries;
+}
