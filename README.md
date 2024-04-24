@@ -7,7 +7,7 @@ This app offers a seamless experience for discovering today's football events ac
 
 **Football Events Overview:** 
 
-Explore today's football events fetched from *sport-tv-guide.live* website.
+Explore today's football events fetched from *sport-tv-guide.live* website. 
 
 **Stream Availability:**
 
