@@ -1,0 +1,41 @@
+.popular-channels {
+  width: 100%;
+  padding: 0;
+  margin: 0px auto 30px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-column-gap: 5px;
+          column-gap: 5px;
+  font-family: sans-serif;
+  width: 80%;
+}
+
+.popular-channels .popular-channel {
+  color: #eee;
+  border: 1px solid #3b3b3b;
+  padding: 6px 10px 4px;
+  font-size: 12px;
+  cursor: pointer;
+  -webkit-transition: .12s ease-in-out;
+  transition: .12s ease-in-out;
+}
+
+.popular-channels .popular-channel:hover {
+  border: 1px solid #999;
+}
+/*# sourceMappingURL=popularChannels.css.map */

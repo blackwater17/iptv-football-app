@@ -70,6 +70,10 @@ export const getLeagueObjects = () => {
 // fetch found channels, highlight if exist
 export const fetchFoundChannels = async (channelNames: string[]) => {
     try {
+        
+        // reset previous found classes
+        document.querySelectorAll('.watch-from-container button.found').forEach(btn => btn.classList.remove("found"));
+        
         for (let i = 0; i < channelNames.length; i++) {
             const channelName = channelNames[i];
             const response = await axios.get(`/api/findChannel?channelName=${encodeURIComponent(channelName)}`);

@@ -1,0 +1,30 @@
+.popular-flags {
+  width: 80%;
+  max-width: 900px;
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-column-gap: 10px;
+          column-gap: 10px;
+  row-gap: 10px;
+}
+
+.popular-flags img {
+  height: 21px !important;
+  width: auto !important;
+  cursor: pointer;
+  -webkit-transition: .12s ease-in-out;
+  transition: .12s ease-in-out;
+}
+
+.popular-flags img:hover {
+  opacity: .6;
+}
+/*# sourceMappingURL=popularFlags.css.map */

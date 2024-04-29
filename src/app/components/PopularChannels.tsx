@@ -2,7 +2,7 @@ import React from 'react';
 
 // update as you wish
 const popularChannels: string[] = [
-    "ESPN", "Fox Sports", "CBS Sports", "Sky Sports", "BT Sport", "NBC Sports", "DAZN", "TNT Sports", "GOL TV", "Eleven Sports", "Sport TV", "SuperSport"
+    "ESPN", "Fox Sports", "CBS Sports", "beIn Sports", "Sky Sports", "BT Sport", "NBC Sports", "DAZN", "TNT Sports", "GOL TV", "Eleven Sports", "Sport TV", "SuperSport"
 ]
 
 interface PopularChannelsProps {

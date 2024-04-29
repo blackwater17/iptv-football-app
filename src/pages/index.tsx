@@ -37,22 +37,18 @@ export default function Home() {
       let doc = parser.parseFromString(htmlText, 'text/html');
 
       let channelNames: string[] = []
-      let elements = Array.from(doc.querySelectorAll<HTMLTableRowElement>("#fullGuide tr td:nth-child(2)"));
 
-      elements.forEach((element) => {
-        let arr = element.textContent?.split(",").map(e => e.trim()) || [];
-        arr.forEach((e) => {
-          if (!channelNames.includes(e)) {
-            channelNames.push(e);
-          }
-        });
-      })
-
-      if (channelNames.length === 0) {
-        channelNames = Array.from(doc.querySelectorAll<HTMLElement>(".station.full")).map(e => e.textContent ?? "");
-      }
-      setChannelNames(channelNames);
+      const channelLinks = Array.from(doc.querySelectorAll<HTMLAnchorElement>("table.ichannels a"));
+      channelNames = channelLinks
+        .filter(a => a.href.includes("/channels/"))
+        .map(e => e.textContent?.trim() || "N/A");
+      const uniqueChannelsList = Array.from(new Set(channelNames));
+      setChannelNames(uniqueChannelsList.sort((a,b) => a>b?1:-1));
     });
+  }
+
+  const setWhereToWatchChannelsOffline = (visibleChannels: string[]) => {
+    setChannelNames(visibleChannels)
   }
 
   const queryChannels = async () => {
@@ -93,86 +89,59 @@ export default function Home() {
   };
 
   // get all sport events info, and group them by league
-  const getSportEventsGroups = async () => {
+  const setSportEvents = async () => {
 
-    const leagueObjects = getLeagueObjects();
+    // const leagueObjects = getLeagueObjects();
+    const urlToFetch = "https://www.livesoccertv.com/schedules/"
+
+    let htmlText: string = await fetchHTML(urlToFetch) || ""
+    let parser = new DOMParser();
+    let doc = parser.parseFromString(htmlText, 'text/html');
+
+    const importantDOM = doc.querySelector(".schedules")
 
     const allEvents = [];
-    const todayNumber = new Date().getDate().toString();
-    for (let i = 0; i < leagueObjects.length; i++) {
-      let htmlText: string = await fetchHTML(leagueObjects[i].url) || ""
-      let parser = new DOMParser();
-      let doc = parser.parseFromString(htmlText, 'text/html');
 
-      const articleDoms = [];
-      const currentDayElement = doc.querySelector<HTMLSpanElement>(".dateSeparator span.date");
-      let currentDay = currentDayElement?.textContent?.includes(todayNumber) ? currentDayElement.textContent : "";
-      const arr = Array.from(doc.querySelectorAll<HTMLDivElement | HTMLTitleElement>('div, article'));
+    const trs = importantDOM?.querySelectorAll("tr") || [];
+    let currentLeagueName = "Unknown league"
+    for (let i = 0; i < trs?.length; i++) {
+      let tr = trs[i]
+      if (tr && tr.className.includes("sortable_comp")) {
+        currentLeagueName = tr.textContent?.trim() || "Unknown league"
+        continue
+      } else {
+        let defaultLink = tr.querySelector("a")?.href || "";
+        const url = new URL(defaultLink);
+        let link = `https://www.livesoccertv.com${url.pathname}${url.search}${url.hash}`;
+        let date = tr.querySelector(".timecell")?.textContent || "N/A"
+        let dateElement = tr.querySelector(".timecell")?.textContent || ""
+        let timeFloat = parseFloat(dateElement || "N/A".replace(":", "."))
+        let timeInteger = -1
+        let eventType = "Football"
+        let league = currentLeagueName
+        let eventName = cleanMatchString(tr.querySelector("#match")?.textContent?.trim() || "N/A EventName")
+        let day = null
 
-      for (let i = 0; i < arr.length; i++) {
-        let div = arr[i];
-        if (div.className === "dateSeparator") {
-          const currentDayElement = div.querySelector<HTMLSpanElement>("span.date");
-          currentDay = currentDayElement?.textContent ?? "";
+        let visibleChannels = Array.from(tr.querySelector("#channels")?.querySelectorAll<HTMLAnchorElement>("a") || [])
+          .filter(a => a.href.includes("channel"))
+          .map(e => e.textContent?.trim() || '');
+
+        let event = {
+          link, date, timeFloat, timeInteger, eventType, league, eventName, day, visibleChannels
         }
-        if (div.className.includes("roundGame")) {
-          div.setAttribute("day", currentDay);
-          articleDoms.push(div);
-        }
+        allEvents.push(event)
       }
 
-      let events = articleDoms.map((eventContainer) => {
-        try {
-          const linkElement = eventContainer.querySelector<HTMLAnchorElement>("a");
-          const dateElement = eventContainer.querySelector<HTMLBRElement>("b");
-
-          if (!linkElement || !dateElement) {
-            return null;
-          }
-
-          const eventObject = {
-            link: linkElement.getAttribute("href") ?? "",
-            date: dateElement.textContent ?? "",
-            timeFloat: parseFloat(dateElement.textContent?.replace(":", ".") ?? ""),
-            timeInteger: (parseInt(dateElement?.textContent?.split(":")[0] || "0") * 60) + parseInt(dateElement?.textContent?.split(":")[1] || "0"),
-            eventType: "Football",
-            league: leagueObjects[i].name,
-            eventName: linkElement.getAttribute("title") ?? "",
-            day: eventContainer.getAttribute("day") ?? ""
-          };
-
-          return eventObject;
-        } catch (error) {
-          console.error('Error parsing event:', error);
-          return null;
-        }
-      }).filter((e): e is NonNullable<typeof e> => e !== null);
-
-      events = events.filter(e => e.day.includes(todayNumber))
-
-      allEvents.push({ events, name: leagueObjects[i].name });
-
-      setAllSportEvents((prevEvents) => {
-        return [...prevEvents, ...events].sort((a, b) => {
-          if (a.timeFloat === b.timeFloat) {
-            return prevEvents.indexOf(a) - prevEvents.indexOf(b);
-          } else {
-            return a.timeFloat > b.timeFloat ? 1 : -1;
-          }
-        });
-      });
-
-      await new Promise((r) => setTimeout(r, 1500));
-
     }
-    return allEvents;
+
+    // allEvents.forEach(d => console.log(d))
+    setAllSportEvents(allEvents)
+
   }
 
   // getting events info
   useEffect(() => {
-    getSportEventsGroups().then((eventGroups: any) => {
-      setSportEventGroups(eventGroups);
-    })
+    setSportEvents()
   }, []);
 
   // time interval 
@@ -212,6 +181,11 @@ export default function Home() {
       setSubQueries(arr);
     }
 
+  }
+
+  function cleanMatchString(matchString: string): string {
+    const scorePattern = /\d+\s*-\s*\d+/;
+    return matchString.replace(scorePattern, 'vs').trim();
   }
 
   const resetFilters = () => {
@@ -327,14 +301,14 @@ export default function Home() {
         </div>
       }
 
-      {groupMatches &&
+      {/* {groupMatches &&
         <EventGroupContainer
           sportEventGroups={sportEventGroups}
           setChannelNames={setChannelNames}
           setWhereToWatchChannels={setWhereToWatchChannels}
           inputRef={inputRef}
           subInputRef={subInputRef}
-        />}
+        />} */}
 
       {!groupMatches &&
         <EventNoGroupContainer
@@ -342,6 +316,7 @@ export default function Home() {
           totalMinutes={totalMinutes}
           setChannelNames={setChannelNames}
           setWhereToWatchChannels={setWhereToWatchChannels}
+          setWhereToWatchChannelsOffline={setWhereToWatchChannelsOffline}
           inputRef={inputRef}
           subInputRef={subInputRef}
         />

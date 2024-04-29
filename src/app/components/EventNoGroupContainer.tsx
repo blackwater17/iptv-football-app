@@ -6,11 +6,12 @@ interface EventNoGroupContainerProps {
   totalMinutes: number;
   setChannelNames: (channelNames: string[]) => void;
   setWhereToWatchChannels: (eventUrl: string) => void;
+  setWhereToWatchChannelsOffline: (visibleChannels: string[]) => void;
   inputRef: React.RefObject<HTMLInputElement>;
   subInputRef: React.RefObject<HTMLInputElement>;
 }
 
-const EventNoGroupContainer: React.FC<EventNoGroupContainerProps> = ({ events, totalMinutes, setChannelNames, setWhereToWatchChannels, inputRef, subInputRef }) => {
+const EventNoGroupContainer: React.FC<EventNoGroupContainerProps> = ({ events, totalMinutes, setChannelNames, setWhereToWatchChannels, setWhereToWatchChannelsOffline, inputRef, subInputRef }) => {
   return (
     <div className="sport-event-groups-container">
       <div className="event-group-container">
@@ -22,6 +23,7 @@ const EventNoGroupContainer: React.FC<EventNoGroupContainerProps> = ({ events, t
               <div onClick={() => {
                 setChannelNames([]);
                 setWhereToWatchChannels(event.link);
+                //setWhereToWatchChannelsOffline(event.visibleChannels)
                 if (inputRef.current && subInputRef.current) {
                   inputRef.current.value = "";
                   subInputRef.current.value = "";

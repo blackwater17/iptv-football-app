@@ -1,12 +1,13 @@
 export interface SportEvent {
     link: string;
     timeInteger: number;
-    date: string;
+    date: string | null;
     timeFloat: number;
     eventType: string;
     league: string;
     eventName: string;
-    day: string;
+    day: string | null;
+    visibleChannels: string[]
 }
 
 export interface MediaEntry {
