@@ -12,6 +12,7 @@ import PopularChannels from '../app/components/PopularChannels';
 import PopularFlags from '../app/components/PopularFlags';
 import WatchFromList from '../app/components/WatchFromList';
 import ChannelsList from '../app/components/ChannelsList';
+import { time } from "console";
 
 
 export default function Home() {
@@ -43,7 +44,7 @@ export default function Home() {
         .filter(a => a.href.includes("/channels/"))
         .map(e => e.textContent?.trim() || "N/A");
       const uniqueChannelsList = Array.from(new Set(channelNames));
-      setChannelNames(uniqueChannelsList.sort((a,b) => a>b?1:-1));
+      setChannelNames(uniqueChannelsList.sort((a, b) => a > b ? 1 : -1));
     });
   }
 
@@ -115,7 +116,9 @@ export default function Home() {
         let link = `https://www.livesoccertv.com${url.pathname}${url.search}${url.hash}`;
         let date = tr.querySelector(".timecell")?.textContent || "N/A"
         let dateElement = tr.querySelector(".timecell")?.textContent || ""
-        let timeFloat = parseFloat(dateElement || "N/A".replace(":", "."))
+        let timeFloat = parseFloat(dateElement.replace(":",".") || "N/A")
+        timeFloat += 6 // timezone difference
+        date=timeFloat.toFixed(2).replace(".",":")
         let timeInteger = -1
         let eventType = "Football"
         let league = currentLeagueName
@@ -135,7 +138,7 @@ export default function Home() {
     }
 
     // allEvents.forEach(d => console.log(d))
-    setAllSportEvents(allEvents)
+    setAllSportEvents(allEvents.sort((a,b) => a.timeFloat > b.timeFloat ? 1 : -1))
 
   }
 
