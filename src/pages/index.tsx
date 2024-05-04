@@ -117,9 +117,9 @@ export default function Home() {
         let date = tr.querySelector(".timecell")?.textContent || "N/A"
         let dateElement = tr.querySelector(".timecell")?.textContent || ""
         let timeFloat = parseFloat(dateElement.replace(":",".") || "N/A")
-        timeFloat += 6 // timezone difference
+        timeFloat += 7 // timezone difference
         date=timeFloat.toFixed(2).replace(".",":")
-        let timeInteger = -1
+        let timeInteger = (60*(parseInt(dateElement.split(":")[0])+7)) + (parseInt(dateElement.split(":")[1])) 
         let eventType = "Football"
         let league = currentLeagueName
         let eventName = cleanMatchString(tr.querySelector("#match")?.textContent?.trim() || "N/A EventName")
